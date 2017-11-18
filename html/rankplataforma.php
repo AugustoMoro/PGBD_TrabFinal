@@ -10,8 +10,18 @@ and open the template in the editor.
         <title></title>
     </head>
     <body>
+    <center>
         <?php
-        // put your code here
+        echo "<h1> Rank das platafomas mais vendidas </h1>";
+        include ("../php/DAO/PlataformaDAO.php");
+        $plataformaDAO = new PlataformaDAO();
+        $platRank = $plataformaDAO->getRankPlataforma();
+        foreach ($platRank as $chave => $valor) {
+            echo  "<font size=\"5\">" . $chave . "<br></font>";
+            echo  "<font size=\"4\">" . $valor . " milhões<br></font>";
+            echo "<a href=\"http://localhost/PGBD_TrabFinal/html/jogoporplataforma.php?plat=$chave\"><font size=\"4\"> Listar Jogos Desta Plataforma <br><br></font></a>";
+        }
         ?>
-    </body>
+    </center>
+</body>
 </html>

@@ -11,13 +11,16 @@
  *
  * @author morov
  */
+include_once ("DB.php");
 include ("C:\wamp64\www\PGBD_TrabFinal\php\InterfaceDAO\IPlataformaDAO.php");
 include ("C:\wamp64\www\PGBD_TrabFinal\php\Objects\Plataforma.php");
 
-class PlataformaDAO implements IPlataformaDAO{
+class PlataformaDAO implements IPlataformaDAO {
+
     var $db;
     var $connection;
     var $plataforma;
+
     public function __construct() {
         $this->db = new DB();
         $this->connection = mysqli_connect($this->db->getHost(), $this->db->getUser(), $this->db->getSenha(), $this->db->getBanco());
@@ -31,7 +34,7 @@ class PlataformaDAO implements IPlataformaDAO{
     public function getPlataformaByIdJogo($idJogo) {
         $sql = "select p.idPlataforma,p.nomePlat from jogo j join plataforma p on j.idPlataforma = p.idPlataforma "
                 . "where idJogo = $idJogo";
-        $result = $this->connection->query($sql); 
+        $result = $this->connection->query($sql);
         if ($result->num_rows > 0) {
             // output data of each row
             while ($row = $result->fetch_assoc()) {
@@ -43,21 +46,21 @@ class PlataformaDAO implements IPlataformaDAO{
         }
         return $this->plataforma;
     }
-    
+
     public function getRankPlataforma() {
-        $sql = "select p.idPlataforma,p.nomePlat from jogo j join plataforma p on j.idPlataforma = p.idPlataforma "
-                . "where idJogo = $idJogo";
-        $result = $this->connection->query($sql); 
+        $sql = "select * from (select sum(v.vendas_totais) as vTotaisPerPlat, p.nomePlat as nPlat from jogo j join plataforma p join vendas v on p.idPlataforma = j.idPlataforma and v.idVendas = j.idVendas "
+                . "group by nPlat) as tab "
+                . "order by vTotaisPerPlat desc";
+        $result = $this->connection->query($sql);
+        $arrPlat = array();
         if ($result->num_rows > 0) {
             // output data of each row
+            
             while ($row = $result->fetch_assoc()) {
-                $plat = new Plataforma();
-                $plat->setIdPlataforma($row["idPlataforma"]);
-                $plat->setNomePlat($row["nomePlat"]);
-                array_push($this->plataforma, $plat);
+                $arrPlat[$row["nPlat"]] = $row["vTotaisPerPlat"];
             }
         }
-        return $this->plataforma;
+        return $arrPlat;
     }
 
 }

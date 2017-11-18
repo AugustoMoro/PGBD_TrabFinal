@@ -51,5 +51,27 @@ class JogoDAO implements IJogoDAO {
         }
         return $this->jogos;
     }
+    
+    public function getJogosByPlataforma($plataforma){
+        $sql = "select j.* from jogo j join plataforma p on p.idPlataforma = j.idPlataforma "
+                . "where p.nomePlat = \"$plataforma\"";
+        $result = $this->connection->query($sql);
+        if ($result->num_rows > 0) {
+            // output data of each row
+            while ($row = $result->fetch_assoc()) {
+                $jogo = new Jogo();
+                $jogo->setIdJogo($row["idJogo"]);
+                $jogo->setNomeJogo($row["jogoNome"]);
+                $jogo->setAnoJogo($row["anoJogo"]);
+                $jogo->setImgLink($row["imgLink"]);
+                $jogo->setIdPlataforma($row["idPlataforma"]);
+                $jogo->setIdGenero($row["idGenero"]);
+                $jogo->setIdEditor($row["idEditor"]);
+                $jogo->setIdVendas($row["idVendas"]);
+                array_push($this->jogos, $jogo);
+            }
+        }
+        return $this->jogos;
+    }
 
 }

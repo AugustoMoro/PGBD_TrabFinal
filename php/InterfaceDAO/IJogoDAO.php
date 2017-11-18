@@ -13,4 +13,5 @@
 interface IJogoDAO {
     public function __construct();
     public function getTop100();
+    public function getJogosByPlataforma($plataforma);
 }
