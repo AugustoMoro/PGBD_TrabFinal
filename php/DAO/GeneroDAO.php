@@ -43,5 +43,19 @@ class GeneroDAO implements IGeneroDAO{
         }
         return $this->genero;
     }
+    
+    public function getRankGenero() {
+        $sql = "select * from (select sum(v.vendas_totais) as vTotaisPerGen, g.generoNome as nGen from jogo j join genero g join vendas v on j.idGenero = g.idGenero and v.idVendas = j.idVendas group by nGen) as tab "
+               . "order by vTotaisPerGen desc";
+        $result = $this->connection->query($sql);
+        $arrGen = array();
+        if ($result->num_rows > 0) {
+            // output data of each row
+            while ($row = $result->fetch_assoc()) {
+                $arrGen[$row["nGen"]] = $row["vTotaisPerGen"];
+            }
+        }
+        return $arrGen;
+    }
 
 }

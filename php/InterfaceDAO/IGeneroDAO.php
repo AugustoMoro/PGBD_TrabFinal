@@ -13,4 +13,5 @@
 interface IGeneroDAO {
     public function __construct();
     public function getGeneroByIdJogo($idJogo);
+    public function getRankGenero();
 }

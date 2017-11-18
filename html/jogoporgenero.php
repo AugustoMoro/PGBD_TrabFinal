@@ -12,11 +12,10 @@ and open the template in the editor.
     <body>
     <center>
         <?php
-        $plataforma = $_GET["plat"];
-
+        $genero = $_GET["gen"];
         include ("../php/DAO/JogoDAO.php");
         $jogoDAO = new JogoDAO();
-        $jogos = $jogoDAO->getJogosByPlataforma($plataforma);
+        $jogos = $jogoDAO->getJogosByGenero($genero);
         for ($i = 0; $i < count($jogos); $i++) {
             $idJogo = $jogos[$i]->idJogo;
             $imgLink = $jogos[$i]->imgLink;
@@ -27,6 +26,6 @@ and open the template in the editor.
             echo "<br><br><br>";
         }
         ?>
-    </center>
+    </center>>
 </body>
 </html>
