@@ -15,4 +15,7 @@ interface IJogoDAO {
     public function getTop100();
     public function getJogosByPlataforma($plataforma);
     public function getJogosByGenero($genero);
+    public function pesquisaByNomeJogo($nomeJogo);
+    public function pesquisaByGeneroJogo($genero);
+    public function pesquisaByAnoJogo($ano);
 }

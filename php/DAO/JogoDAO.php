@@ -33,7 +33,7 @@ class JogoDAO implements IJogoDAO {
 
     public function getTop100() {
         $sql = "select j.* from jogo j join vendas v on j.idJogo = v.idVendas order by (v.vendas_totais) desc";
-        $result = $this->connection->query($sql); 
+        $result = $this->connection->query($sql);
         if ($result->num_rows > 0) {
             // output data of each row
             while ($row = $result->fetch_assoc()) {
@@ -51,8 +51,8 @@ class JogoDAO implements IJogoDAO {
         }
         return $this->jogos;
     }
-    
-    public function getJogosByPlataforma($plataforma){
+
+    public function getJogosByPlataforma($plataforma) {
         $sql = "select j.* from jogo j join plataforma p on p.idPlataforma = j.idPlataforma "
                 . "where p.nomePlat = \"$plataforma\"";
         $result = $this->connection->query($sql);
@@ -73,10 +73,74 @@ class JogoDAO implements IJogoDAO {
         }
         return $this->jogos;
     }
-    
-    public function getJogosByGenero($genero){
+
+    public function getJogosByGenero($genero) {
         $sql = "select j.* from jogo j join genero g on g.idGenero = j.idGenero "
                 . "where g.generoNome = \"$genero\"";
+        $result = $this->connection->query($sql);
+        if ($result->num_rows > 0) {
+            // output data of each row
+            while ($row = $result->fetch_assoc()) {
+                $jogo = new Jogo();
+                $jogo->setIdJogo($row["idJogo"]);
+                $jogo->setNomeJogo($row["jogoNome"]);
+                $jogo->setAnoJogo($row["anoJogo"]);
+                $jogo->setImgLink($row["imgLink"]);
+                $jogo->setIdPlataforma($row["idPlataforma"]);
+                $jogo->setIdGenero($row["idGenero"]);
+                $jogo->setIdEditor($row["idEditor"]);
+                $jogo->setIdVendas($row["idVendas"]);
+                array_push($this->jogos, $jogo);
+            }
+        }
+        return $this->jogos;
+    }
+
+    public function pesquisaByNomeJogo($nomeJogo) {
+        $sql = "select * from jogo where jogoNome like \"%$nomeJogo%\"";
+        $result = $this->connection->query($sql);
+        if ($result->num_rows > 0) {
+            // output data of each row
+            while ($row = $result->fetch_assoc()) {
+                $jogo = new Jogo();
+                $jogo->setIdJogo($row["idJogo"]);
+                $jogo->setNomeJogo($row["jogoNome"]);
+                $jogo->setAnoJogo($row["anoJogo"]);
+                $jogo->setImgLink($row["imgLink"]);
+                $jogo->setIdPlataforma($row["idPlataforma"]);
+                $jogo->setIdGenero($row["idGenero"]);
+                $jogo->setIdEditor($row["idEditor"]);
+                $jogo->setIdVendas($row["idVendas"]);
+                array_push($this->jogos, $jogo);
+            }
+        }
+        return $this->jogos;
+    }
+
+    public function pesquisaByGeneroJogo($genero) {
+        $sql = "select j.* from jogo j join genero g on j.idGenero = g.idGenero "
+                . "where g.generoNome like \"%$genero%\"";
+        $result = $this->connection->query($sql);
+        if ($result->num_rows > 0) {
+            // output data of each row
+            while ($row = $result->fetch_assoc()) {
+                $jogo = new Jogo();
+                $jogo->setIdJogo($row["idJogo"]);
+                $jogo->setNomeJogo($row["jogoNome"]);
+                $jogo->setAnoJogo($row["anoJogo"]);
+                $jogo->setImgLink($row["imgLink"]);
+                $jogo->setIdPlataforma($row["idPlataforma"]);
+                $jogo->setIdGenero($row["idGenero"]);
+                $jogo->setIdEditor($row["idEditor"]);
+                $jogo->setIdVendas($row["idVendas"]);
+                array_push($this->jogos, $jogo);
+            }
+        }
+        return $this->jogos;
+    }
+
+    public function pesquisaByAnoJogo($ano) {
+        $sql = "select * from jogo where anoJogo like \"%$ano%\"";
         $result = $this->connection->query($sql);
         if ($result->num_rows > 0) {
             // output data of each row
