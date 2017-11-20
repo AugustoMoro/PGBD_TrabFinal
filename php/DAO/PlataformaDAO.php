@@ -48,7 +48,7 @@ class PlataformaDAO implements IPlataformaDAO {
     }
 
     public function getRankPlataforma() {
-        $sql = "select * from (select sum(v.vendas_totais) as vTotaisPerPlat, p.nomePlat as nPlat from jogo j join plataforma p join vendas v on p.idPlataforma = j.idPlataforma and v.idVendas = j.idVendas "
+        $sql = "select * from (select sum(v.vendas_totais) as vTotaisPerPlat, p.nomePlat as nPlat from jogo j join plataforma p join vendas v on p.idPlataforma = j.idPlataforma and v.idJogo = j.idJogo "
                 . "group by nPlat) as tab "
                 . "order by vTotaisPerPlat desc";
         $result = $this->connection->query($sql);
@@ -97,7 +97,8 @@ class PlataformaDAO implements IPlataformaDAO {
         $sql = "insert into plataforma (nomePlat) values (\"$nomePlat\")";
 
         if ($this->connection->query($sql) === TRUE) {
-            echo "New record created successfully";
+            echo "<br>Nova plataforma inserida com sucesso!";
+            echo "<a href=\"http://localhost/PGBD_TrabFinal/html/inserir.php\">Voltar à tela de inserção<br><br></a>";
         } else {
             echo "Error: " . $sql . "<br>" . $this->connection->error;
         }

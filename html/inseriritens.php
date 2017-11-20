@@ -44,7 +44,7 @@ and open the template in the editor.
                 $idPlat = $jogos[$i]->idPlataforma;
                 $idGen = $jogos[$i]->idGenero;
                 $idEd = $jogos[$i]->idEditor;
-                $idVendas = $jogos[$i]->idVendas;
+                $idJogo = $jogos[$i]->idJogo;
                 $plataformaDAO = new PlataformaDAO();
                 $plat = $plataformaDAO->getPlataformaByIdPlat($idPlat);
                 $generoDAO = new GeneroDAO();
@@ -52,7 +52,7 @@ and open the template in the editor.
                 $editorDAO = new EditorDAO();
                 $editor = $editorDAO->getEditorByIdEd($idEd);
                 $vendasDAO = new VendasDAO();
-                $vendas = $vendasDAO->getVendasByIdVendas($idVendas);
+                $vendas = $vendasDAO->getVendasByIdJogo($idJogo);
                 echo "<tr><td><font size=\"3\">" . ($i+1) . "." . $jogos[$i]->nomeJogo . "</font></td>";
                 echo "<td><font size=\"3\">" . $anoJogo . "</font></td>";
                 echo "<td><font size=\"3\">" . $plat[0]->nomePlat . "</font></td>";

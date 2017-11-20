@@ -47,7 +47,7 @@ class GeneroDAO implements IGeneroDAO {
     }
 
     public function getRankGenero() {
-        $sql = "select * from (select sum(v.vendas_totais) as vTotaisPerGen, g.generoNome as nGen from jogo j join genero g join vendas v on j.idGenero = g.idGenero and v.idVendas = j.idVendas group by nGen) as tab "
+        $sql = "select * from (select sum(v.vendas_totais) as vTotaisPerGen, g.generoNome as nGen from jogo j join genero g join vendas v on j.idGenero = g.idGenero and v.idJogo = j.idJogo group by nGen) as tab "
                 . "order by vTotaisPerGen desc";
         $result = $this->connection->query($sql);
         $arrGen = array();
@@ -94,7 +94,8 @@ class GeneroDAO implements IGeneroDAO {
         $sql = "insert into genero (generoNome) values (\"$nomeGenero\")";
 
         if ($this->connection->query($sql) === TRUE) {
-            echo "New record created successfully";
+            echo "<br>Novo gênero inserido com sucesso!";
+            echo "<a href=\"http://localhost/PGBD_TrabFinal/html/inserir.php\">Voltar à tela de inserção<br><br></a>";
         } else {
             echo "Error: " . $sql . "<br>" . $this->connection->error;
         }

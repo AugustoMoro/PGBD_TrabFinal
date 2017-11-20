@@ -80,7 +80,8 @@ class EditorDAO implements IEditorDAO {
         $sql = "insert into editor (editorNome) values (\"$editorNome\")";
 
         if ($this->connection->query($sql) === TRUE) {
-            echo "New record created successfully";
+            echo "<br>Novo Editor inserido com sucesso!";
+            echo "<a href=\"http://localhost/PGBD_TrabFinal/html/inserir.php\">Voltar à tela de inserção<br><br></a>";
         } else {
             echo "Error: " . $sql . "<br>" . $this->connection->error;
         }

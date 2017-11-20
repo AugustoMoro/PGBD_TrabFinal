@@ -18,4 +18,6 @@ interface IJogoDAO {
     public function pesquisaByNomeJogo($nomeJogo);
     public function pesquisaByGeneroJogo($genero);
     public function pesquisaByAnoJogo($ano);
+    public function pesquisaIdJogo($imgLink);
+    public function insertJogo($jogoNome,$anoJogo,$imgLink,$idPlataforma,$idGenero,$idEditor);
 }

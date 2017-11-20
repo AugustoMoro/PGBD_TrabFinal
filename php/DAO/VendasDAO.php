@@ -31,8 +31,8 @@ class VendasDAO implements IVendasDAO {
     }
 
     public function getVendasByIdJogo($idJogo) {
-        $sql = "select v.idVendas,v.NA_vendas,v.EU_vendas,v.JP_vendas,v.outras_vendas,v.vendas_globais,v.vendas_totais "
-                . "from jogo j join vendas v on j.idVendas = v.idVendas " 
+        $sql = "select v.idVendas,v.NA_vendas,v.EU_vendas,v.JP_vendas,v.outras_vendas,v.vendas_globais,v.vendas_totais, v.idJogo "
+                . "from jogo j join vendas v on j.idJogo = v.idJogo " 
                 . "where j.idJogo = $idJogo";
         $result = $this->connection->query($sql); 
         if ($result->num_rows > 0) {
@@ -46,6 +46,7 @@ class VendasDAO implements IVendasDAO {
                 $v->setOutras_vendas($row["outras_vendas"]);
                 $v->setVendas_globais($row["vendas_globais"]);
                 $v->setVendas_totais($row["vendas_totais"]);
+                $v->setIdJogo($row["idJogo"]);
                 array_push($this->vendas, $v);
             }
         }
@@ -66,10 +67,21 @@ class VendasDAO implements IVendasDAO {
                 $v->setOutras_vendas($row["outras_vendas"]);
                 $v->setVendas_globais($row["vendas_globais"]);
                 $v->setVendas_totais($row["vendas_totais"]);
+                $v->setIdJogo($row["idJogo"]);
                 array_push($this->vendas, $v);
             }
         }
         return $this->vendas;
     }
+    public function insertVendas($idJogo,$NA_vendas,$EU_vendas,$JP_vendas,$outras_vendas,$vendas_globais,$vendas_totais){
+        $sql = "insert into vendas (idJogo,NA_vendas,EU_vendas,JP_vendas,outras_vendas,vendas_globais,vendas_totais) "
+                . "values ($idJogo,$NA_vendas,$EU_vendas,$JP_vendas,$outras_vendas,$vendas_globais,$vendas_globais)";
 
+        if ($this->connection->query($sql) === TRUE) {
+            echo "<br>Venda inserida com sucesso!";
+            echo "<a href=\"http://localhost/PGBD_TrabFinal/html/inseriritens.php\">Voltar à lista de jogos<br><br></a>";
+        } else {
+            echo "Error: " . $sql . "<br>" . $this->connection->error;
+        }
+    }
 }

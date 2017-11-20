@@ -14,4 +14,5 @@ interface IVendasDAO {
     public function __construct();
     public function getVendasByIdJogo($idJogo);
     public function getVendasByIdVendas($idVendas);
+    public function insertVendas($idJogo,$NA_vendas,$EU_vendas,$JP_vendas,$outras_vendas,$vendas_globais,$vendas_totais);
 }

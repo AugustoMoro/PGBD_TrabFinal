@@ -32,7 +32,7 @@ class JogoDAO implements IJogoDAO {
     }
 
     public function getTop100() {
-        $sql = "select j.* from jogo j join vendas v on j.idJogo = v.idVendas order by (v.vendas_totais) desc";
+        $sql = "select j.* from jogo j join vendas v on j.idJogo = v.idJogo order by (v.vendas_totais) desc";
         $result = $this->connection->query($sql);
         if ($result->num_rows > 0) {
             // output data of each row
@@ -45,7 +45,7 @@ class JogoDAO implements IJogoDAO {
                 $jogo->setIdPlataforma($row["idPlataforma"]);
                 $jogo->setIdGenero($row["idGenero"]);
                 $jogo->setIdEditor($row["idEditor"]);
-                $jogo->setIdVendas($row["idVendas"]);
+                //$jogo->setIdVendas($row["idVendas"]);
                 array_push($this->jogos, $jogo);
             }
         }
@@ -67,7 +67,7 @@ class JogoDAO implements IJogoDAO {
                 $jogo->setIdPlataforma($row["idPlataforma"]);
                 $jogo->setIdGenero($row["idGenero"]);
                 $jogo->setIdEditor($row["idEditor"]);
-                $jogo->setIdVendas($row["idVendas"]);
+                //$jogo->setIdVendas($row["idVendas"]);
                 array_push($this->jogos, $jogo);
             }
         }
@@ -89,7 +89,7 @@ class JogoDAO implements IJogoDAO {
                 $jogo->setIdPlataforma($row["idPlataforma"]);
                 $jogo->setIdGenero($row["idGenero"]);
                 $jogo->setIdEditor($row["idEditor"]);
-                $jogo->setIdVendas($row["idVendas"]);
+                //$jogo->setIdVendas($row["idVendas"]);
                 array_push($this->jogos, $jogo);
             }
         }
@@ -110,7 +110,7 @@ class JogoDAO implements IJogoDAO {
                 $jogo->setIdPlataforma($row["idPlataforma"]);
                 $jogo->setIdGenero($row["idGenero"]);
                 $jogo->setIdEditor($row["idEditor"]);
-                $jogo->setIdVendas($row["idVendas"]);
+                //$jogo->setIdVendas($row["idVendas"]);
                 array_push($this->jogos, $jogo);
             }
         }
@@ -132,7 +132,7 @@ class JogoDAO implements IJogoDAO {
                 $jogo->setIdPlataforma($row["idPlataforma"]);
                 $jogo->setIdGenero($row["idGenero"]);
                 $jogo->setIdEditor($row["idEditor"]);
-                $jogo->setIdVendas($row["idVendas"]);
+                //$jogo->setIdVendas($row["idVendas"]);
                 array_push($this->jogos, $jogo);
             }
         }
@@ -153,11 +153,35 @@ class JogoDAO implements IJogoDAO {
                 $jogo->setIdPlataforma($row["idPlataforma"]);
                 $jogo->setIdGenero($row["idGenero"]);
                 $jogo->setIdEditor($row["idEditor"]);
-                $jogo->setIdVendas($row["idVendas"]);
+                //$jogo->setIdVendas($row["idVendas"]);
                 array_push($this->jogos, $jogo);
             }
         }
         return $this->jogos;
+    }
+    
+    public function insertJogo($jogoNome,$anoJogo,$imgLink,$idPlataforma,$idGenero,$idEditor){
+        $sql = "insert into jogo (jogoNome,anoJogo,imgLink,idPlataforma,idGenero,idEditor) values (\"$jogoNome\",$anoJogo,\"$imgLink\",$idPlataforma,$idGenero,$idEditor)";
+
+        if ($this->connection->query($sql) === TRUE) {
+            echo "<br>Novo jogo inserido com sucesso!";
+            echo "<a href=\"http://localhost/PGBD_TrabFinal/html/inseriritens.php\">Voltar à lista de jogos<br><br></a>";
+        } else {
+            echo "Error: " . $sql . "<br>" . $this->connection->error;
+        }
+    }
+    
+    public function pesquisaIdJogo($imgLink){
+        $sql = "select idJogo from jogo where imgLink = \"$imgLink\"";
+        $result = $this->connection->query($sql);
+        $idJogo = NULL;
+        if ($result->num_rows > 0) {
+            // output data of each row
+            while ($row = $result->fetch_assoc()) {
+                $idJogo = $row["idJogo"];
+            }
+        }
+        return $idJogo;
     }
 
 }

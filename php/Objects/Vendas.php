@@ -19,9 +19,14 @@ class Vendas {
     var $outras_vendas;
     var $vendas_globais;
     var $vendas_totais;
+    var $idJogo;
     
     function __construct() {
         
+    }
+    
+    function getIdJogo() {
+        return $this->idJogo;
     }
     
     function getIdVendas() {
@@ -79,6 +84,11 @@ class Vendas {
     function setVendas_totais($vendas_totais) {
         $this->vendas_totais = $vendas_totais;
     }
+    
+    function setIdJogo($idJogo) {
+        $this->idJogo = $idJogo;
+    }
+
 
 
 }
