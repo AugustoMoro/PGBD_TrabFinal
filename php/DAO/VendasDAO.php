@@ -51,5 +51,25 @@ class VendasDAO implements IVendasDAO {
         }
         return $this->vendas;
     }
+    
+    public function getVendasByIdVendas($idVendas){
+        $sql = "select * from vendas where idVendas = $idVendas"; 
+        $result = $this->connection->query($sql); 
+        if ($result->num_rows > 0) {
+            // output data of each row
+            while ($row = $result->fetch_assoc()) {
+                $v = new Vendas();
+                $v->setIdVendas($row["idVendas"]);
+                $v->setNA_vendas($row["NA_vendas"]);
+                $v->setEU_vendas($row["EU_vendas"]);
+                $v->setJP_vendas($row["JP_vendas"]);
+                $v->setOutras_vendas($row["outras_vendas"]);
+                $v->setVendas_globais($row["vendas_globais"]);
+                $v->setVendas_totais($row["vendas_totais"]);
+                array_push($this->vendas, $v);
+            }
+        }
+        return $this->vendas;
+    }
 
 }

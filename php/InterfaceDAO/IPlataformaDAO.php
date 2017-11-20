@@ -14,4 +14,7 @@ interface IPlataformaDAO {
     public function __construct();
     public function getPlataformaByIdJogo($idJogo);
     public function getRankPlataforma();
+    public function getPlataformaByIdPlat($idPlat);
+    public function getTotasPlataformas();
+    public function insertPlataforma($nomePlat);
 }

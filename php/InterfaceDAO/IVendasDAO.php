@@ -13,4 +13,5 @@
 interface IVendasDAO {
     public function __construct();
     public function getVendasByIdJogo($idJogo);
+    public function getVendasByIdVendas($idVendas);
 }

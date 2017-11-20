@@ -62,5 +62,45 @@ class PlataformaDAO implements IPlataformaDAO {
         }
         return $arrPlat;
     }
+    
+    public function getPlataformaByIdPlat($idPlat){
+        $sql = "select * from plataforma where idPlataforma = $idPlat";
+        $result = $this->connection->query($sql);
+        if ($result->num_rows > 0) {
+            // output data of each row
+            while ($row = $result->fetch_assoc()) {
+                $plat = new Plataforma();
+                $plat->setIdPlataforma($row["idPlataforma"]);
+                $plat->setNomePlat($row["nomePlat"]);
+                array_push($this->plataforma, $plat);
+            }
+        }
+        return $this->plataforma;
+    }
+    
+    public function getTotasPlataformas(){
+        $sql = "select * from plataforma";
+        $result = $this->connection->query($sql);
+        if ($result->num_rows > 0) {
+            // output data of each row
+            while ($row = $result->fetch_assoc()) {
+                $plat = new Plataforma();
+                $plat->setIdPlataforma($row["idPlataforma"]);
+                $plat->setNomePlat($row["nomePlat"]);
+                array_push($this->plataforma, $plat);
+            }
+        }
+        return $this->plataforma;
+    }
+    
+    public function insertPlataforma($nomePlat){
+        $sql = "insert into plataforma (nomePlat) values (\"$nomePlat\")";
+
+        if ($this->connection->query($sql) === TRUE) {
+            echo "New record created successfully";
+        } else {
+            echo "Error: " . $sql . "<br>" . $this->connection->error;
+        }
+    }
 
 }
