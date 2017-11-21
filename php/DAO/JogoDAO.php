@@ -166,6 +166,28 @@ class JogoDAO implements IJogoDAO {
         return $this->jogos;
     }
     
+    public function pesquisaByIdJogo($idJogo){
+        $this->editor = array();
+        $sql = "select * from jogo where idJogo = $idJogo"; 
+        $result = $this->connection->query($sql);
+        if ($result->num_rows > 0) {
+            // output data of each row
+            while ($row = $result->fetch_assoc()) {
+                $jogo = new Jogo();
+                $jogo->setIdJogo($row["idJogo"]);
+                $jogo->setNomeJogo($row["jogoNome"]);
+                $jogo->setAnoJogo($row["anoJogo"]);
+                $jogo->setImgLink($row["imgLink"]);
+                $jogo->setIdPlataforma($row["idPlataforma"]);
+                $jogo->setIdGenero($row["idGenero"]);
+                $jogo->setIdEditor($row["idEditor"]);
+                //$jogo->setIdVendas($row["idVendas"]);
+                array_push($this->jogos, $jogo);
+            }
+        }
+        return $this->jogos;
+    }
+    
     public function insertJogo($jogoNome,$anoJogo,$imgLink,$idPlataforma,$idGenero,$idEditor){
         $sql = "insert into jogo (jogoNome,anoJogo,imgLink,idPlataforma,idGenero,idEditor) values (\"$jogoNome\",$anoJogo,\"$imgLink\",$idPlataforma,$idGenero,$idEditor)";
 
@@ -197,6 +219,17 @@ class JogoDAO implements IJogoDAO {
 
         if ($this->connection->query($sql) === TRUE) {
             echo "<br>Jogo Atualizado com sucesso!";
+        } else {
+            echo "Error: " . $sql . "<br>" . $this->connection->error;
+        }
+    }
+    
+    public function removeJogo($idJogo){
+        $sql = "delete from jogo where idJogo = $idJogo";
+
+        if ($this->connection->query($sql) === TRUE) {
+            echo "<br>Jogo Removido com Sucesso!";
+            echo "<a href=\"http://localhost/PGBD_TrabFinal/html/removerjogo.php\">Voltar<br><br></a>";
         } else {
             echo "Error: " . $sql . "<br>" . $this->connection->error;
         }

@@ -19,6 +19,8 @@ interface IJogoDAO {
     public function pesquisaByGeneroJogo($genero);
     public function pesquisaByAnoJogo($ano);
     public function pesquisaIdJogo($imgLink);
+    public function pesquisaByIdJogo($idJogo);
     public function insertJogo($jogoNome,$anoJogo,$imgLink,$idPlataforma,$idGenero,$idEditor);
     public function updateJogo($idJogo,$jogoNome,$anoJogo,$idPlataforma,$idGenero,$idEditor);
+    public function removeJogo($idJogo);
 }
