@@ -32,6 +32,7 @@ class EditorDAO implements IEditorDAO {
     }
 
     public function getEditorByIdJogo($idJogo) {
+        $this->editor = array();
         $sql = "select e.idEditor,e.editorNome from editor e join jogo j on j.idEditor = e.idEditor where idJogo = $idJogo";
         $result = $this->connection->query($sql);
         if ($result->num_rows > 0) {
@@ -47,6 +48,7 @@ class EditorDAO implements IEditorDAO {
     }
     
     public function getEditorByIdEd($idEd){
+        $this->editor = array();
         $sql = "select * from editor where idEditor = $idEd";
         $result = $this->connection->query($sql);
         if ($result->num_rows > 0) {
@@ -62,6 +64,7 @@ class EditorDAO implements IEditorDAO {
     }
     
     public function getTodosEditores(){
+        $this->editor = array();
         $sql = "select * from editor";
         $result = $this->connection->query($sql);
         if ($result->num_rows > 0) {

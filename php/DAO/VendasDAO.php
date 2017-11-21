@@ -11,6 +11,7 @@
  *
  * @author morov
  */
+include_once("DB.php");
 include ("C:\wamp64\www\PGBD_TrabFinal\php\InterfaceDAO\IVendasDAO.php");
 include ("C:\wamp64\www\PGBD_TrabFinal\php\Objects\Vendas.php");
 
@@ -31,6 +32,7 @@ class VendasDAO implements IVendasDAO {
     }
 
     public function getVendasByIdJogo($idJogo) {
+        $this->vendas = array();
         $sql = "select v.idVendas,v.NA_vendas,v.EU_vendas,v.JP_vendas,v.outras_vendas,v.vendas_globais,v.vendas_totais, v.idJogo "
                 . "from jogo j join vendas v on j.idJogo = v.idJogo " 
                 . "where j.idJogo = $idJogo";
@@ -54,6 +56,7 @@ class VendasDAO implements IVendasDAO {
     }
     
     public function getVendasByIdVendas($idVendas){
+        $this->vendas = array();
         $sql = "select * from vendas where idVendas = $idVendas"; 
         $result = $this->connection->query($sql); 
         if ($result->num_rows > 0) {
@@ -80,6 +83,17 @@ class VendasDAO implements IVendasDAO {
         if ($this->connection->query($sql) === TRUE) {
             echo "<br>Venda inserida com sucesso!";
             echo "<a href=\"http://localhost/PGBD_TrabFinal/html/inseriritens.php\">Voltar à lista de jogos<br><br></a>";
+        } else {
+            echo "Error: " . $sql . "<br>" . $this->connection->error;
+        }
+    }
+    
+    public function updateVendas($idJogo,$NA_vendas,$EU_vendas,$JP_vendas,$outras_vendas,$vendas_globais,$vendas_totais){
+        $sql = "update vendas set NA_vendas = $NA_vendas, EU_vendas = $EU_vendas, JP_vendas = $JP_vendas, "
+            . "outras_vendas = $outras_vendas, vendas_globais = $vendas_globais, vendas_totais = $vendas_totais "
+                . "where idJogo = $idJogo";
+        if ($this->connection->query($sql) === TRUE) {
+            echo "<br>Venda Atualizada com Sucesso!";
         } else {
             echo "Error: " . $sql . "<br>" . $this->connection->error;
         }

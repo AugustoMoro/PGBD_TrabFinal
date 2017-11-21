@@ -11,7 +11,7 @@
  *
  * @author morov
  */
-include ("DB.php");
+include_once ("DB.php");
 include ("C:\wamp64\www\PGBD_TrabFinal\php\InterfaceDAO\IJogoDAO.php");
 include ("C:\wamp64\www\PGBD_TrabFinal\php\Objects\Jogo.php");
 
@@ -32,6 +32,7 @@ class JogoDAO implements IJogoDAO {
     }
 
     public function getTop100() {
+        $this->editor = array();
         $sql = "select j.* from jogo j join vendas v on j.idJogo = v.idJogo order by (v.vendas_totais) desc";
         $result = $this->connection->query($sql);
         if ($result->num_rows > 0) {
@@ -53,6 +54,7 @@ class JogoDAO implements IJogoDAO {
     }
 
     public function getJogosByPlataforma($plataforma) {
+        $this->editor = array();
         $sql = "select j.* from jogo j join plataforma p on p.idPlataforma = j.idPlataforma "
                 . "where p.nomePlat = \"$plataforma\"";
         $result = $this->connection->query($sql);
@@ -75,6 +77,7 @@ class JogoDAO implements IJogoDAO {
     }
 
     public function getJogosByGenero($genero) {
+        $this->editor = array();
         $sql = "select j.* from jogo j join genero g on g.idGenero = j.idGenero "
                 . "where g.generoNome = \"$genero\"";
         $result = $this->connection->query($sql);
@@ -97,6 +100,7 @@ class JogoDAO implements IJogoDAO {
     }
 
     public function pesquisaByNomeJogo($nomeJogo) {
+        $this->editor = array();
         $sql = "select * from jogo where jogoNome like \"%$nomeJogo%\"";
         $result = $this->connection->query($sql);
         if ($result->num_rows > 0) {
@@ -118,6 +122,7 @@ class JogoDAO implements IJogoDAO {
     }
 
     public function pesquisaByGeneroJogo($genero) {
+        $this->editor = array();
         $sql = "select j.* from jogo j join genero g on j.idGenero = g.idGenero "
                 . "where g.generoNome like \"%$genero%\"";
         $result = $this->connection->query($sql);
@@ -140,6 +145,7 @@ class JogoDAO implements IJogoDAO {
     }
 
     public function pesquisaByAnoJogo($ano) {
+        $this->editor = array();
         $sql = "select * from jogo where anoJogo like \"%$ano%\"";
         $result = $this->connection->query($sql);
         if ($result->num_rows > 0) {
@@ -172,6 +178,7 @@ class JogoDAO implements IJogoDAO {
     }
     
     public function pesquisaIdJogo($imgLink){
+        $this->editor = array();
         $sql = "select idJogo from jogo where imgLink = \"$imgLink\"";
         $result = $this->connection->query($sql);
         $idJogo = NULL;
@@ -182,6 +189,17 @@ class JogoDAO implements IJogoDAO {
             }
         }
         return $idJogo;
+    }
+    
+    public function updateJogo($idJogo,$jogoNome,$anoJogo,$idPlataforma,$idGenero,$idEditor){
+        $sql = "update jogo set jogoNome = \"$jogoNome\", anoJogo = $anoJogo, idPlataforma = $idPlataforma, "
+                . "idGenero = $idGenero, idEditor = $idEditor where idJogo = $idJogo";
+
+        if ($this->connection->query($sql) === TRUE) {
+            echo "<br>Jogo Atualizado com sucesso!";
+        } else {
+            echo "Error: " . $sql . "<br>" . $this->connection->error;
+        }
     }
 
 }

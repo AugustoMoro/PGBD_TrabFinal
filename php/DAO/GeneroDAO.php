@@ -32,6 +32,7 @@ class GeneroDAO implements IGeneroDAO {
     }
 
     public function getGeneroByIdJogo($idJogo) {
+        $this->genero = array();
         $sql = "select g.idGenero,generoNome from genero g join jogo j on j.idGenero = g.idGenero where j.idJogo = $idJogo";
         $result = $this->connection->query($sql);
         if ($result->num_rows > 0) {
@@ -47,6 +48,7 @@ class GeneroDAO implements IGeneroDAO {
     }
 
     public function getRankGenero() {
+        $this->genero = array();
         $sql = "select * from (select sum(v.vendas_totais) as vTotaisPerGen, g.generoNome as nGen from jogo j join genero g join vendas v on j.idGenero = g.idGenero and v.idJogo = j.idJogo group by nGen) as tab "
                 . "order by vTotaisPerGen desc";
         $result = $this->connection->query($sql);
@@ -61,6 +63,7 @@ class GeneroDAO implements IGeneroDAO {
     }
 
     public function getGeneroGyIdGen($idGen) {
+        $this->genero = array();
         $sql = "select * from genero where idGenero = $idGen";
         $result = $this->connection->query($sql);
         if ($result->num_rows > 0) {
@@ -76,6 +79,7 @@ class GeneroDAO implements IGeneroDAO {
     }
 
     public function getTodosGeneros() {
+        $this->genero = array();
         $sql = "select * from genero";
         $result = $this->connection->query($sql);
         if ($result->num_rows > 0) {

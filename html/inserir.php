@@ -25,7 +25,7 @@ and open the template in the editor.
             Outras Vendas:<br>
             <input type="text" name="other_sales"><br>
             Vendas Globais:<br>
-            <input type="text" name="global_sales"><br>
+            <input type="text" name="global_sales"><br><br>
             Selecione uma imagem: <input name="imagem" type="file" />
             <br><br>
             <?php

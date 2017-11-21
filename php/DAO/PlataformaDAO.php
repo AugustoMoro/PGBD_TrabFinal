@@ -32,6 +32,7 @@ class PlataformaDAO implements IPlataformaDAO {
     }
 
     public function getPlataformaByIdJogo($idJogo) {
+        $this->plataforma = array();
         $sql = "select p.idPlataforma,p.nomePlat from jogo j join plataforma p on j.idPlataforma = p.idPlataforma "
                 . "where idJogo = $idJogo";
         $result = $this->connection->query($sql);
@@ -48,6 +49,7 @@ class PlataformaDAO implements IPlataformaDAO {
     }
 
     public function getRankPlataforma() {
+        $this->plataforma = array();
         $sql = "select * from (select sum(v.vendas_totais) as vTotaisPerPlat, p.nomePlat as nPlat from jogo j join plataforma p join vendas v on p.idPlataforma = j.idPlataforma and v.idJogo = j.idJogo "
                 . "group by nPlat) as tab "
                 . "order by vTotaisPerPlat desc";
@@ -64,6 +66,7 @@ class PlataformaDAO implements IPlataformaDAO {
     }
     
     public function getPlataformaByIdPlat($idPlat){
+        $this->plataforma = array();
         $sql = "select * from plataforma where idPlataforma = $idPlat";
         $result = $this->connection->query($sql);
         if ($result->num_rows > 0) {
@@ -79,6 +82,7 @@ class PlataformaDAO implements IPlataformaDAO {
     }
     
     public function getTotasPlataformas(){
+        $this->plataforma = array();
         $sql = "select * from plataforma";
         $result = $this->connection->query($sql);
         if ($result->num_rows > 0) {
