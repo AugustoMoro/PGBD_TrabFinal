@@ -12,8 +12,7 @@
  */
 interface IEditorDAO {
     public function __construct();
-    public function getEditorByIdJogo($idJogo);
-    public function getEditorByIdEd($idEd);
-    public function getTodosEditores();
-    public function insertEditor($editorNome);
+    public function getEditorByIdJogo($nosql,$idJogo);
+    public function getEditorByIdEd($nosql,$idEd);
+    public function getTodosEditores($nosql);
 }

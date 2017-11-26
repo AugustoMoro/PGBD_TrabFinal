@@ -20,7 +20,7 @@ class DB {
     function __construct() {
         $this->host = "localhost";
         $this->user = "root";
-        $this->senha = "";
+        $this->senha = "root";
         $this->banco = "games";
     }
     

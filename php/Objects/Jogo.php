@@ -88,8 +88,5 @@ class Jogo {
     function setIdVendas($idVendas) {
         $this->idVendas = $idVendas;
     }
-
-
-
     
 }

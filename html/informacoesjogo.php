@@ -13,36 +13,37 @@ and open the template in the editor.
         <div>
             <center>
                 <?php
-                include ("../php/DAO/GeneroDAO.php");
-                include ("../php/DAO/PlataformaDAO.php");
-                include ("../php/DAO/EditorDAO.php");
-                include ("../php/DAO/VendasDAO.php");
+                include($_SERVER['DOCUMENT_ROOT']."/PGBD_TrabFinal/php/DAO/GeneroDAO.php");
+                include($_SERVER['DOCUMENT_ROOT']."/PGBD_TrabFinal/php/DAO/PlataformaDAO.php");
+                include($_SERVER['DOCUMENT_ROOT']."/PGBD_TrabFinal/php/DAO/EditorDAO.php");
+                include($_SERVER['DOCUMENT_ROOT']."/PGBD_TrabFinal/php/DAO/VendasDAO.php");
                 $idJogo = $_GET["idjogo"];
                 $imgLink = $_GET["img"];
                 $anoJogo = $_GET["anojogo"];
+                $nosql = $_GET["bdtipo"];
                 echo "<img src=\"" . $imgLink . "\" width=\"800\" height=\"500\" />";
                 echo "<h1>Informações do jogo<h1>";
                 echo "<h2>Ano:<br><font size=\"4\"> $anoJogo </font>";
                 echo "<h2>Gênero:<br>";
                 $generoDAO = new GeneroDAO();
-                $genero = $generoDAO->getGeneroByIdJogo($idJogo);
+                $genero = $generoDAO->getGeneroByIdJogo($nosql,$idJogo);
                 for($i=0; $i<count($genero); $i++){
                     echo  "<font size=\"4\">" . $genero[$i]->generoNome . "<br></font>";
                 }
                 $plataformaDAO = new PlataformaDAO();
-                $plataforma = $plataformaDAO->getPlataformaByIdJogo($idJogo);
+                $plataforma = $plataformaDAO->getPlataformaByIdJogo($nosql,$idJogo);
                 echo "<h2>Plataforma:<br>";
                 for($i=0; $i<count($plataforma); $i++){
                     echo  "<font size=\"4\">" . $plataforma[$i]->nomePlat . "<br></font>";
                 }
                 $editorDAO = new EditorDAO();
-                $editor = $editorDAO->getEditorByIdJogo($idJogo);
+                $editor = $editorDAO->getEditorByIdJogo($nosql,$idJogo);
                 echo "<h2>Editor:<br>";
                 for($i=0; $i<count($editor); $i++){
                     echo  "<font size=\"4\">" . $editor[$i]->editorNome . "<br></font>";
                 }
                 $vendasDAO = new VendasDAO();
-                $vendas = $vendasDAO->getVendasByIdJogo($idJogo);
+                $vendas = $vendasDAO->getVendasByIdJogo($nosql,$idJogo);
                 echo "<h2>Vendas (em milhões):<br>";
                 for($i=0; $i<count($vendas); $i++){
                     echo "<font size=\"4\">América do Norte: " . $vendas[$i]->NA_vendas . "<br></font>";

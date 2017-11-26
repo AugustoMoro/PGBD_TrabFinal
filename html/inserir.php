@@ -11,29 +11,34 @@ and open the template in the editor.
     </head>
     <body>
     <center>
-        <form action="http://localhost/PGBD_TrabFinal/html/insertjogo.php" method="post" enctype="multipart/form-data">
-            Nome do Jogo:<br>
-            <input type="text" name="nome"><br>
-            Ano do Jogo:<br>
-            <input type="text" name="ano"><br><br>
-            Vendas na América do Norte:<br>
-            <input type="text" name="NA_sales"><br>
-            Vendas na Europa:<br>
-            <input type="text" name="EU_sales"><br>
-            Vendas no Japão:<br>
-            <input type="text" name="JP_sales"><br>
-            Outras Vendas:<br>
-            <input type="text" name="other_sales"><br>
-            Vendas Globais:<br>
-            <input type="text" name="global_sales"><br><br>
-            Selecione uma imagem: <input name="imagem" type="file" />
-            <br><br>
             <?php
-                include ("../php/DAO/GeneroDAO.php");
-                include ("../php/DAO/PlataformaDAO.php");
-                include ("../php/DAO/EditorDAO.php");
+                $nosql = $_GET["bdtipo"];
+
+                echo "<form action=\"http://localhost/PGBD_TrabFinal/html/insertjogo.php\" method=\"post\" enctype=\"multipart/form-data\">";
+                echo "Nome do Jogo:<br>";
+                echo "<input type=\"hidden\" name=\"bdtipo\" value=\"$nosql\">";
+                echo "<input type=\"text\" name=\"nome\"><br>";
+                echo "Ano do Jogo:<br>";
+                echo "<input type=\"text\" name=\"ano\"><br><br>";
+                echo "Vendas na América do Norte:<br>";
+                echo "<input type=\"text\" name=\"NA_sales\"><br>";
+                echo "Vendas na Europa:<br>";
+                echo "<input type=\"text\" name=\"EU_sales\"><br>";
+                echo "Vendas no Japão:<br>";
+                echo "<input type=\"text\" name=\"JP_sales\"><br>";
+                echo "Outras Vendas:<br>";
+                echo "<input type=\"text\" name=\"other_sales\"><br>";
+                echo "Vendas Globais:<br>";
+                echo "<input type=\"text\" name=\"global_sales\"><br><br>";
+                echo "Selecione uma imagem: <input name=\"imagem\" type=\"file\" />";
+                echo "<br><br>";
+                
+            
+                include($_SERVER['DOCUMENT_ROOT']."/PGBD_TrabFinal/php/DAO/GeneroDAO.php");
+                include($_SERVER['DOCUMENT_ROOT']."/PGBD_TrabFinal/php/DAO/PlataformaDAO.php");
+                include($_SERVER['DOCUMENT_ROOT']."/PGBD_TrabFinal/php/DAO/EditorDAO.php");
                 $generoDAO = new GeneroDAO();
-                $gen = $generoDAO->getTodosGeneros();
+                $gen = $generoDAO->getTodosGeneros($nosql);
                 echo "<h3>Selecione um Gênero</h3>";
                 for($i=0; $i<count($gen); $i++){
                     $genNome = $gen[$i]->generoNome;
@@ -43,9 +48,8 @@ and open the template in the editor.
                     else
                         echo "$genNome<input type=\"radio\" value=\"$idGen\" name=\"genero\" /><br />";
                 }
-                echo "<a href=\"http://localhost/PGBD_TrabFinal/html/forminsert.php?val=Nome do Gênero&tabela=gen\">Inserir Novo Gênero</a>";
                 $plataformaDAO = new PlataformaDAO();
-                $plat = $plataformaDAO->getTotasPlataformas();
+                $plat = $plataformaDAO->getTotasPlataformas($nosql);
                 echo "<h3>Selecione uma Plataforma</h3>";
                 for($i=0; $i<count($plat); $i++){
                     $platNome = $plat[$i]->nomePlat;
@@ -55,9 +59,8 @@ and open the template in the editor.
                     else
                         echo "$platNome<input type=\"radio\" value=\"$idPlat\" name=\"plataforma\" /><br />";
                 }
-                echo "<a href=\"http://localhost/PGBD_TrabFinal/html/forminsert.php?val=Nome da Plataforma&tabela=plat\">Inserir Nova Plataforma</a>";
                 $editorDAO = new EditorDAO();
-                $editor = $editorDAO->getTodosEditores();
+                $editor = $editorDAO->getTodosEditores($nosql);
                 echo "<h3>Selecione um Editor</h3>";
                 for($i=0; $i<count($editor); $i++){
                     $editorNome = $editor[$i]->editorNome;
@@ -67,7 +70,6 @@ and open the template in the editor.
                     else
                         echo "$editorNome<input type=\"radio\" value=\"$idEditor\" name=\"editor\" /><br />";
                 }
-                echo "<a href=\"http://localhost/PGBD_TrabFinal/html/forminsert.php?val=Nome do Editor&tabela=ed\">Inserir Novo Editor</a>";
             ?>
             <br><input type="submit" value="Salvar">
         </form>

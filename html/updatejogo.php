@@ -12,25 +12,27 @@ and open the template in the editor.
     <body>
     <center>
         <?php
-        include ("../php/DAO/GeneroDAO.php");
-        include ("../php/DAO/PlataformaDAO.php");
-        include ("../php/DAO/EditorDAO.php");
-        include ("../php/DAO/VendasDAO.php");
-        include ("../php/DAO/JogoDAO.php");
+        include($_SERVER['DOCUMENT_ROOT']."/PGBD_TrabFinal/php/DAO/GeneroDAO.php");
+        include($_SERVER['DOCUMENT_ROOT']."/PGBD_TrabFinal/php/DAO/PlataformaDAO.php");
+        include($_SERVER['DOCUMENT_ROOT']."/PGBD_TrabFinal/php/DAO/EditorDAO.php");
+        include($_SERVER['DOCUMENT_ROOT']."/PGBD_TrabFinal/php/DAO/VendasDAO.php");
+        include($_SERVER['DOCUMENT_ROOT']."/PGBD_TrabFinal/php/DAO/JogoDAO.php");
         $idJogo = $_GET["idjogo"];
         $imgLink = $_GET["img"];
         $anoJogo = $_GET["anojogo"];
         $nomeJogo = $_GET["nomejogo"];
+        $nosql = $_GET["bdtipo"];
         echo "<img src=\"" . $imgLink . "\" width=\"800\" height=\"500\" />";
         echo "<form action=\"http://localhost/PGBD_TrabFinal/html/updateitens.php\" method=\"post\">";
         echo "<h2>Nome:</h2>";
         echo "<input type=\"hidden\" name=\"idjogo\" value=\"$idJogo\">";
+        echo "<input type=\"hidden\" name=\"bdtipo\" value=\"$nosql\">";
         echo "<input type=\"text\" name=\"nome\" style=\"font-family: Tahoma; font-size: 16px\" value=\"$nomeJogo\">";
         echo "<h2>Ano:</h2>";
         echo "<input type=\"text\" name=\"ano\"  size=\"5\" style=\"font-family: Tahoma; font-size: 16px\" value=\"$anoJogo\">";
         $generoDAO = new GeneroDAO();
-        $gen = $generoDAO->getTodosGeneros();
-        $genJogo = $generoDAO->getGeneroByIdJogo($idJogo);
+        $gen = $generoDAO->getTodosGeneros($nosql);
+        $genJogo = $generoDAO->getGeneroByIdJogo($nosql,$idJogo);
         echo "<br><h3>Gênero:</h3>";
         for ($i = 0; $i < count($gen); $i++) {
             $genNome = $gen[$i]->generoNome;
@@ -43,8 +45,8 @@ and open the template in the editor.
         }
         echo "<br><h3>Plataforma:</h3>";
         $plataformaDAO = new PlataformaDAO();
-        $plat = $plataformaDAO->getTotasPlataformas();
-        $platJogo = $plataformaDAO->getPlataformaByIdJogo($idJogo);
+        $plat = $plataformaDAO->getTotasPlataformas($nosql);
+        $platJogo = $plataformaDAO->getPlataformaByIdJogo($nosql,$idJogo);
         for ($i = 0; $i < count($plat); $i++) {
             $platNome = $plat[$i]->nomePlat;
             $idPlat = $plat[$i]->idPlataforma;
@@ -56,8 +58,8 @@ and open the template in the editor.
         }
         echo "<br><h3>Editor:</h3>";
         $editorDAO = new EditorDAO();
-        $ed = $editorDAO->getTodosEditores();
-        $edJogo = $editorDAO->getEditorByIdJogo($idJogo);
+        $ed = $editorDAO->getTodosEditores($nosql);
+        $edJogo = $editorDAO->getEditorByIdJogo($nosql,$idJogo);
         for($i=0; $i<count($ed); $i++){
             $edNome = $ed[$i]->editorNome;
             $idEd = $ed[$i]->idEditor;
@@ -69,7 +71,7 @@ and open the template in the editor.
         }
         echo "<h2>Vendas (em milhões):</h2>";
         $vendasDAO = new VendasDAO();
-        $venda = $vendasDAO->getVendasByIdJogo($idJogo);
+        $venda = $vendasDAO->getVendasByIdJogo($nosql,$idJogo);
         $NA_vendas = $venda[0]->NA_vendas;
         $EU_vendas = $venda[0]->EU_vendas;
         $JP_vendas = $venda[0]->JP_vendas;

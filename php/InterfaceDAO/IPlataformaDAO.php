@@ -12,9 +12,7 @@
  */
 interface IPlataformaDAO {
     public function __construct();
-    public function getPlataformaByIdJogo($idJogo);
-    public function getRankPlataforma();
-    public function getPlataformaByIdPlat($idPlat);
-    public function getTotasPlataformas();
-    public function insertPlataforma($nomePlat);
+    public function getPlataformaByIdJogo($nosql,$idJogo);
+    public function getPlataformaByIdPlat($nosql,$idPlat);
+    public function getTotasPlataformas($nosql);
 }

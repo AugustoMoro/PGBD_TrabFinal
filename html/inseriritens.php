@@ -10,9 +10,6 @@ and open the template in the editor.
         <title></title>
     </head>
     <body>
-        <form action="http://localhost/PGBD_TrabFinal/html/inserir.php" method="get">
-            <input type="submit" name="botao-ok" value="Inserir Itens">
-        </form>
         <table width="100%" border="1px">
             <tr>
 
@@ -30,13 +27,19 @@ and open the template in the editor.
                 
             </tr>
             <?php
-            include ("../php/DAO/JogoDAO.php");
-            include ("../php/DAO/PlataformaDAO.php");
-            include ("../php/DAO/GeneroDAO.php");
-            include ("../php/DAO/EditorDAO.php");
-            include ("../php/DAO/VendasDAO.php");
+            $nosql = $_GET["bdtipo"];
+            echo "<form action=\"http://localhost/PGBD_TrabFinal/html/inserir.php?bdtipo\" method=\"get\">";
+            echo "<input type=\"hidden\" name=\"bdtipo\" value=\"$nosql\">";
+            echo "<input type=\"submit\" name=\"botao-ok\" value=\"Inserir Itens\">";
+            echo "</form>";
+            
+            include($_SERVER['DOCUMENT_ROOT']."/PGBD_TrabFinal/php/DAO/JogoDAO.php");
+            include($_SERVER['DOCUMENT_ROOT']."/PGBD_TrabFinal/php/DAO/PlataformaDAO.php");
+            include($_SERVER['DOCUMENT_ROOT']."/PGBD_TrabFinal/php/DAO/GeneroDAO.php");
+            include($_SERVER['DOCUMENT_ROOT']."/PGBD_TrabFinal/php/DAO/EditorDAO.php");
+            include($_SERVER['DOCUMENT_ROOT']."/PGBD_TrabFinal/php/DAO/VendasDAO.php");
             $jogoDAO = new JogoDAO();
-            $jogos = $jogoDAO->getTop100();
+            $jogos = $jogoDAO->getTop100($nosql);
             for ($i = 0; $i < count($jogos); $i++) {
                 $idJogo = $jogos[$i]->idJogo;
                 $imgLink = $jogos[$i]->imgLink;
@@ -46,13 +49,13 @@ and open the template in the editor.
                 $idEd = $jogos[$i]->idEditor;
                 $idJogo = $jogos[$i]->idJogo;
                 $plataformaDAO = new PlataformaDAO();
-                $plat = $plataformaDAO->getPlataformaByIdPlat($idPlat);
+                $plat = $plataformaDAO->getPlataformaByIdPlat($nosql,$idPlat);
                 $generoDAO = new GeneroDAO();
-                $gen = $generoDAO->getGeneroGyIdGen($idGen);
+                $gen = $generoDAO->getGeneroGyIdGen($nosql,$idGen);
                 $editorDAO = new EditorDAO();
-                $editor = $editorDAO->getEditorByIdEd($idEd);
+                $editor = $editorDAO->getEditorByIdEd($nosql,$idEd);
                 $vendasDAO = new VendasDAO();
-                $vendas = $vendasDAO->getVendasByIdJogo($idJogo);
+                $vendas = $vendasDAO->getVendasByIdJogo($nosql,$idJogo);
                 echo "<tr><td><font size=\"3\">" . ($i+1) . "." . $jogos[$i]->nomeJogo . "</font></td>";
                 echo "<td><font size=\"3\">" . $anoJogo . "</font></td>";
                 echo "<td><font size=\"3\">" . $plat[0]->nomePlat . "</font></td>";

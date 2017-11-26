@@ -13,17 +13,17 @@ and open the template in the editor.
     <center>
         <?php
         $plataforma = $_GET["plat"];
-
-        include ("../php/DAO/JogoDAO.php");
+        $nosql = $_GET["bdtipo"];
+        include($_SERVER['DOCUMENT_ROOT']."/PGBD_TrabFinal/php/DAO/JogoDAO.php");
         $jogoDAO = new JogoDAO();
-        $jogos = $jogoDAO->getJogosByPlataforma($plataforma);
+        $jogos = $jogoDAO->getJogosByPlataforma($nosql,$plataforma);
         for ($i = 0; $i < count($jogos); $i++) {
             $idJogo = $jogos[$i]->idJogo;
             $imgLink = $jogos[$i]->imgLink;
             $anoJogo = $jogos[$i]->anoJogo;
             echo "<h2> " . ($i + 1) . " - " . $jogos[$i]->nomeJogo . " (" . $anoJogo . ")" . "<h2><br>";
             echo "<img src=\"" . $imgLink . "\" width=\"500\" height=\"300\" />";
-            echo "<a href=\"http://localhost/PGBD_TrabFinal/html/informacoesjogo.php?idjogo=$idJogo&img=$imgLink&anojogo=$anoJogo\"><br><font size=\"4\"> Informações do Jogo </font></a>";
+            echo "<a href=\"http://localhost/PGBD_TrabFinal/html/informacoesjogo.php?idjogo=$idJogo&img=$imgLink&anojogo=$anoJogo&bdtipo=$nosql\"><br><font size=\"4\"> Informações do Jogo </font></a>";
             echo "<br><br><br>";
         }
         ?>

@@ -12,13 +12,14 @@ and open the template in the editor.
     <body>
     <center>
         <?php
-        include ("../php/DAO/GeneroDAO.php");
+        $nosql = $_GET["bdtipo"];
+        include($_SERVER['DOCUMENT_ROOT']."/PGBD_TrabFinal/php/DAO/GeneroDAO.php");
         $generoDAO = new GeneroDAO();
-        $genero = $generoDAO->getRankGenero();
-        foreach ($genero as $chave => $valor) {
+        $genero = $generoDAO->getTodosGeneros($nosql);
+        foreach ($genero as $g) {
+            $chave = $g->generoNome;
             echo "<font size=\"5\">" . $chave . "<br></font>";
-            echo "<font size=\"4\">" . $valor . " milhões<br></font>";
-            echo "<a href=\"http://localhost/PGBD_TrabFinal/html/jogoporgenero.php?gen=$chave\"><font size=\"4\"> Listar Jogos Deste Gênero <br><br></font></a>";
+            echo "<a href=\"http://localhost/PGBD_TrabFinal/html/jogoporgenero.php?gen=$chave&bdtipo=$nosql\"><font size=\"4\"> Listar Jogos Deste Gênero <br><br></font></a>";
         }
         // put your code here
         ?>

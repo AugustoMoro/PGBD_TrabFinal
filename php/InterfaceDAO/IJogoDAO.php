@@ -12,15 +12,15 @@
  */
 interface IJogoDAO {
     public function __construct();
-    public function getTop100();
-    public function getJogosByPlataforma($plataforma);
-    public function getJogosByGenero($genero);
-    public function pesquisaByNomeJogo($nomeJogo);
-    public function pesquisaByGeneroJogo($genero);
-    public function pesquisaByAnoJogo($ano);
-    public function pesquisaIdJogo($imgLink);
-    public function pesquisaByIdJogo($idJogo);
-    public function insertJogo($jogoNome,$anoJogo,$imgLink,$idPlataforma,$idGenero,$idEditor);
-    public function updateJogo($idJogo,$jogoNome,$anoJogo,$idPlataforma,$idGenero,$idEditor);
-    public function removeJogo($idJogo);
+    public function getTop100($nosql);
+    public function getJogosByPlataforma($nosql,$plataforma);
+    public function getJogosByGenero($nosql,$genero);
+    public function pesquisaByNomeJogo($nosql,$nomeJogo);
+    public function pesquisaByGeneroJogo($nosql,$genero);
+    public function pesquisaByAnoJogo($nosql,$ano);
+    public function pesquisaIdJogo($nosql,$imgLink);
+    public function pesquisaByIdJogo($nosql,$idJogo);
+    public function insertJogo($nosql,$jogo);
+    public function updateJogo($nosql,$jogo);
+    public function removeJogo($nosql,$idJogo);
 }

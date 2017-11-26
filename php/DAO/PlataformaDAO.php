@@ -12,8 +12,8 @@
  * @author morov
  */
 include_once ("DB.php");
-include ("C:\wamp64\www\PGBD_TrabFinal\php\InterfaceDAO\IPlataformaDAO.php");
-include ("C:\wamp64\www\PGBD_TrabFinal\php\Objects\Plataforma.php");
+include($_SERVER['DOCUMENT_ROOT']."/PGBD_TrabFinal/php/InterfaceDAO/IPlataformaDAO.php");
+include($_SERVER['DOCUMENT_ROOT']."/PGBD_TrabFinal/php/Objects/Plataforma.php");
 
 class PlataformaDAO implements IPlataformaDAO {
 
@@ -31,80 +31,98 @@ class PlataformaDAO implements IPlataformaDAO {
         $this->plataforma = array();
     }
 
-    public function getPlataformaByIdJogo($idJogo) {
+    public function getPlataformaByIdJogo($nosql,$idJogo) {
         $this->plataforma = array();
-        $sql = "select p.idPlataforma,p.nomePlat from jogo j join plataforma p on j.idPlataforma = p.idPlataforma "
-                . "where idJogo = $idJogo";
-        $result = $this->connection->query($sql);
-        if ($result->num_rows > 0) {
-            // output data of each row
-            while ($row = $result->fetch_assoc()) {
+        if($nosql == 0){
+            $sql = "select p.idPlataforma,p.nomePlat from jogo j join plataforma p on j.idPlataforma = p.idPlataforma "
+                    . "where idJogo = $idJogo";
+            $result = $this->connection->query($sql);
+            if ($result->num_rows > 0) {
+                while ($row = $result->fetch_assoc()) {
+                    $plat = new Plataforma();
+                    $plat->setIdPlataforma($row["idPlataforma"]);
+                    $plat->setNomePlat($row["nomePlat"]);
+                    array_push($this->plataforma, $plat);
+                }
+            }
+            return $this->plataforma;
+        }
+        else{
+            $mongo = new MongoDB\Driver\Manager("mongodb://localhost:27017");
+            $id = new \MongoDB\BSON\ObjectId($idJogo);
+            $filter = ["_id" => $id];
+            $options = [];
+            $query = new MongoDB\Driver\Query($filter, $options);
+            $cursor = $mongo->executeQuery('dbgames.games', $query);
+            foreach ($cursor as $document) {
                 $plat = new Plataforma();
-                $plat->setIdPlataforma($row["idPlataforma"]);
-                $plat->setNomePlat($row["nomePlat"]);
+                $plat->setIdPlataforma($document->nomePlat);
+                $plat->setNomePlat($document->nomePlat);
                 array_push($this->plataforma, $plat);
             }
+            return $this->plataforma;
         }
-        return $this->plataforma;
     }
 
-    public function getRankPlataforma() {
-        $this->plataforma = array();
-        $sql = "select * from (select sum(v.vendas_totais) as vTotaisPerPlat, p.nomePlat as nPlat from jogo j join plataforma p join vendas v on p.idPlataforma = j.idPlataforma and v.idJogo = j.idJogo "
-                . "group by nPlat) as tab "
-                . "order by vTotaisPerPlat desc";
-        $result = $this->connection->query($sql);
-        $arrPlat = array();
-        if ($result->num_rows > 0) {
-            // output data of each row
-            
-            while ($row = $result->fetch_assoc()) {
-                $arrPlat[$row["nPlat"]] = $row["vTotaisPerPlat"];
-            }
-        }
-        return $arrPlat;
-    }
-    
-    public function getPlataformaByIdPlat($idPlat){
-        $this->plataforma = array();
-        $sql = "select * from plataforma where idPlataforma = $idPlat";
-        $result = $this->connection->query($sql);
-        if ($result->num_rows > 0) {
-            // output data of each row
-            while ($row = $result->fetch_assoc()) {
-                $plat = new Plataforma();
-                $plat->setIdPlataforma($row["idPlataforma"]);
-                $plat->setNomePlat($row["nomePlat"]);
-                array_push($this->plataforma, $plat);
-            }
-        }
-        return $this->plataforma;
-    }
-    
-    public function getTotasPlataformas(){
-        $this->plataforma = array();
-        $sql = "select * from plataforma";
-        $result = $this->connection->query($sql);
-        if ($result->num_rows > 0) {
-            // output data of each row
-            while ($row = $result->fetch_assoc()) {
-                $plat = new Plataforma();
-                $plat->setIdPlataforma($row["idPlataforma"]);
-                $plat->setNomePlat($row["nomePlat"]);
-                array_push($this->plataforma, $plat);
-            }
-        }
-        return $this->plataforma;
-    }
-    
-    public function insertPlataforma($nomePlat){
-        $sql = "insert into plataforma (nomePlat) values (\"$nomePlat\")";
 
-        if ($this->connection->query($sql) === TRUE) {
-            echo "<br>Nova plataforma inserida com sucesso!";
-            echo "<a href=\"http://localhost/PGBD_TrabFinal/html/inserir.php\">Voltar à tela de inserção<br><br></a>";
-        } else {
-            echo "Error: " . $sql . "<br>" . $this->connection->error;
+    public function getPlataformaByIdPlat($nosql,$idPlat){
+        $this->plataforma = array();
+        if($nosql == 0){
+            $sql = "select * from plataforma where idPlataforma = $idPlat";
+            $result = $this->connection->query($sql);
+            if ($result->num_rows > 0) {
+                while ($row = $result->fetch_assoc()) {
+                    $plat = new Plataforma();
+                    $plat->setIdPlataforma($row["idPlataforma"]);
+                    $plat->setNomePlat($row["nomePlat"]);
+                    array_push($this->plataforma, $plat);
+                }
+            }
+            return $this->plataforma;
+        }
+        else{
+            $options = [];
+            $filter = ['nomePlat' => $idPlat];
+            $query = new MongoDB\Driver\Query($filter, $options);
+            $mongo = new MongoDB\Driver\Manager("mongodb://localhost:27017");
+            $cursor = $mongo->executeQuery('dbgames.games', $query);
+            foreach ($cursor as $document) {
+                $plat = new Plataforma();
+                $plat->setIdPlataforma($document->nomePlat);
+                $plat->setNomePlat($document->nomePlat);
+                array_push($this->plataforma, $plat);
+            }
+            return $this->plataforma;
+        }
+    }
+    
+    public function getTotasPlataformas($nosql){
+        $this->plataforma = array();
+        if($nosql == 0){
+            $sql = "select * from plataforma";
+            $result = $this->connection->query($sql);
+            if ($result->num_rows > 0) {
+                while ($row = $result->fetch_assoc()) {
+                    $plat = new Plataforma();
+                    $plat->setIdPlataforma($row["idPlataforma"]);
+                    $plat->setNomePlat($row["nomePlat"]);
+                    array_push($this->plataforma, $plat);
+                }
+            }
+            return $this->plataforma;
+        }
+        else{
+            $mongo = new MongoDB\Driver\Manager("mongodb://localhost:27017");
+            $cmd = new MongoDB\Driver\Command(['distinct' => 'games','key' => 'nomePlat',[]]);
+            $cursor = $mongo->executeCommand('dbgames', $cmd);
+            $array = current($cursor->toArray())->values;
+            for($i=0; $i<count($array); $i++){
+                $plat = new Plataforma();
+                $plat->setIdPlataforma($array[$i]);
+                $plat->setNomePlat($array[$i]);
+                array_push($this->plataforma, $plat);
+            }
+            return $this->plataforma;
         }
     }
 

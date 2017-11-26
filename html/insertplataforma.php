@@ -1,5 +1,5 @@
 <?php
-include ("../php/DAO/PlataformaDAO.php");
+include($_SERVER['DOCUMENT_ROOT']."/PGBD_TrabFinal/php/DAO/PlataformaDAO.php");
 $nomePlat = NULL;
 if(isset($_GET["nome"])){
     $nomePlat = $_GET["nome"];
